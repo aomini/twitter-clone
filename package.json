@@ -1,0 +1,33 @@
+{
+  "name": "twitter-clone",
+  "version": "1.0.0",
+  "description": "Twitter clone app with best methods and practices",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rakeshshubhu/twitter-clone.git"
+  },
+  "keywords": [
+    "twitterclone",
+    "nodejs",
+    "nodetypescript",
+    "nodereact",
+    "reacttypescript"
+  ],
+  "author": "rakesh & bek the striper lover",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rakeshshubhu/twitter-clone/issues"
+  },
+  "homepage": "https://github.com/rakeshshubhu/twitter-clone#readme",
+  "devDependencies": {
+    "jest": "^25.1.0",
+    "typescript": "^3.8.3"
+  }
+}
