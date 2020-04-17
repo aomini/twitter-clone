@@ -174,7 +174,8 @@ ESlint is a tool for identifying the errors in the javascript according to the p
 - With that pre-built configurations we don't need our previous set of rules as it's already configured in our `eslint:recommended` built. Find more about rules on
 [rules](https://eslint.org/docs/rules/)
 - `.eslintrc` will now look like :
-```
+``` 
+// update here required
 ```
 - Run our old friend `npm run lint`. It will now display us an error `Unexpected constant condition  no-constant-condition`. It's saying we have a constant condition and it's actually referring to this line in out `test.js`.
 ```js
@@ -421,8 +422,142 @@ I personally prefer (google) style guides...
 
 ### TYPESCRIPT
 
-## Integrating eslint & typescript
+## Installation
+Since, I believe you already have installed `typescript` if not then let's just install it.
+```
+npm i typescript -D
+```
+You can now create a file `test.ts`.
+**test.ts**
+```ts
+let a: string = "string";
+export default a;
+``` 
+If you see any eslint errors ignore them for now.
+You can run `npx tsc` to compile the `.ts` files with typescript. Nothing will happen as it compiles successfully. Update the `test.ts` file with following code :
+**test.ts**
+```ts
+let a: string = "string";
+a = 2;
+export default a;
+``` 
+Here, you have declared `a` as a `string` but assigning it a `number` which is a type error so run `npx tsc` then it will throw an error on that line.
+Since, you'll be running it again & again how about creating an alias script on `package.json`. Add this line to your package.json scripts key.
+```
+  "check:types": "tsc",
+  "validate:code": "npm run check:types & npm run pretty"
+```
+If you only want to check types you can do `npm run check:types` or if you want to check types as well as validate code the run `npm run validate:code`.
+**test.ts**
+```ts
+let a: string 
+  = "string";
+a = 2;
+export default a;
+``` 
+Here, you should make a format error & run `npm run validate:code`. **Notice** it fixes the formatting issue. Normally, it prettier doesn't works with the `.ts` or `.tsx` files but it's because of the glob that you
+have added in the glob of `npm run pretty` script.
 
+## Integrating eslint & typescript
+If you go back to `test.ts` you'll have some linting errors.
+<img src="images/ts-lint-error.png"/>
+
+But if you run our previous eslint command `npm run lint` it won't throw you the error. It's because our eslint only supports or looks at `.js` files, so you need to extend it's area of scope. You can do that with eslint flag `--ext`. 
+Update the lint script in your `package.json`.
+
+**package.json**
+```
+"lint": "npx eslint --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore ." 
+```
+With that it will lint now `js, jsx, ts & tsx` extension. You can run `npm run lint` it will now throw the error as `unexpected token :`.
+
+This is because `: string` doesn't mean anything in javascript, so you've to tell eslint that this is a typescript. You can now add typescript plugin to work with files with extension `.ts` & `.tsx`.
+Now, run : `npm install @typescript-eslint/parser @typescript-eslint/eslint-plugin -D`
+Read more : [typescript-eslint](https://github.com/typescript-eslint/typescript-eslint)
+
+You can now update the eslint configuration file.
+**.eslintrc**
+```
+{
+    "parserOptions" : {
+        "ecmaVersion" : 6,
+        "sourceType" : "module",
+        "ecmaFeatures" : {
+            "jsx" : true
+        }
+    },
+    "env" : {
+        "browser" : true
+    },
+    "extends" : ["eslint:recommended", "prettier"],
+    "rules" : {   
+        "no-constant-condition" : "off"    
+    },
+    "overrides": [
+        {
+            "files" : "**/*.+(ts|tsx)",
+            "parser" : "@typescript-eslint/parser",
+            "parserOptions": {
+                "project" : "./tsconfig.json"
+            },
+            "plugins" : ["@typescript-eslint/eslint-plugin"],
+            "extends" : []
+        }
+    ]
+}
+```
+you have know override eslint for files with extensions `ts | tsx`. Go to your `test.ts` file you won't have that linting error now but we have another problem.
+Previously, you have looked at a `typeof error` let's do that again in `test.ts`.
+
+**test.ts**
+```ts
+let a: string = "string";
+typeof a === "stng"
+export default a;
+```
+You'll have two error one with eslint & another being typescript.
+<img src="images/typescript-eslint-multi-error.png">
+
+Since, we want typescript to do most of the stuffs in our `.ts | .tsx` file so you will want to show the error with typescript. For this we will extends some predefined eslint-typescript configs.
+<img src="images/typescript-eslint-config.png">
+
+Now, run `npm run lint`. Ignore all the warning's for now mostly they be of `unused vars` which is not a problem. Currently, at `test.ts` you will see two errors
+You may see two errors again in `let a : string = "string"` but they are different now if you take a look.
+- **'a' is never reassigned. Use 'const' instead.**
+  - This error is from eslint you can fix it by simply doing `const a : string = "string"`.
+- **Type string trivially inferred from a string literal, remove type annotation.**
+  - This error is from typescript and it's saying the string literal infers the type so no need to give it `:string`.
+  - ` const a  = "string`.
+
+**test.ts**
+```ts
+const a = "string";
+typeof a === "string"
+export default a;
+```
+
+## Prettier & typescript
+Sometime, prettier & typescript fight with eachother. So, we want typescript to be in sync with our prettier configs. So, we have to add one more plugin.
+(UPDATE REQUIRED WHY)
+
+**.eslintrc**
+```
+"overrides": [
+        {
+            "files" : "**/*.+(ts|tsx)",
+            "parser" : "@typescript-eslint/parser",
+            "parserOptions": {
+                "project" : "./tsconfig.json"
+            },
+            "plugins" : ["@typescript-eslint/eslint-plugin"],
+            "extends" : [
+                "plugin:@typescript-eslint/eslint-recommended",
+                "plugin:@typescript-eslint/recommended",
+                "eslint-config-prettier/@typescript-eslint"
+            ]
+        }
+    ]
+```
 
 
 

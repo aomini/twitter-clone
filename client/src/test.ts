@@ -1,2 +1,3 @@
-let a : string = "string";
+const a = "string";
+typeof a === "string"
 export default a;
