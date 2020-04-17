@@ -11,7 +11,8 @@
     },
     "extends" : ["eslint:recommended", "prettier"],
     "rules" : {   
-        "no-constant-condition" : "off"    
+        "no-constant-condition" : "off",
+        
     },
     "overrides": [
         {
@@ -24,8 +25,11 @@
             "extends" : [
                 "plugin:@typescript-eslint/eslint-recommended",
                 "plugin:@typescript-eslint/recommended",
-                // "eslint-config-prettier/@typescript-eslint"
-            ]
+                "eslint-config-prettier/@typescript-eslint"
+            ],
+            "rules" : {
+               "@typescript-eslint/interface-name-prefix" : "off"
+            }
         }
     ]
 }

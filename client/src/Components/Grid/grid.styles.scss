@@ -1,0 +1,28 @@
+@import '../../sass/variables.scss';
+
+$border-default : 1px solid $light-blue-2x;
+
+#layoutGrid{
+    display: grid;
+    .row{
+        display: grid; 
+        border-top: $border-default;
+        border-left: $border-default;
+        border-right: $border-default;
+    }
+
+    .row:last-child{
+        border-bottom: $border-default;
+    }
+
+    .cell{
+        height: 15px;
+        // width: 10px;
+        // padding: 10px;
+    }
+
+    .cell:not(:last-child){
+        border-right: $border-default;
+    }
+}
+
