@@ -1,14 +1,23 @@
-import * as React from 'react';
-import './cell.styles.scss'
+import * as React from "react";
+import {ICell} from "./../../Interfaces/Cell.interface";
 
-interface IProp{
-    columns : number
-    row: number
-}
+import StartIcon from "../Icons/StartIcon";
+import EndIcon from "../Icons/TargetIcon";
 
-const Cell: React.FC<IProp> = ({columns, row}) => {
-    return (
-        <div></div>       
-    )
-}
+import "./cell.styles.scss";
+
+const Cell: React.FC<ICell> = ({row, column, startNode = false, endNode = false}) => {
+  return (
+    <>
+      <div
+        className="cell"
+        data-coordinate={`${row}, ${column}`}
+        key={`${row}, ${column}`}
+      >
+        {startNode && <StartIcon/>}
+        {endNode && <EndIcon/>}
+      </div>
+    </>
+  );
+};
 export default Cell;

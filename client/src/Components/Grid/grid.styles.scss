@@ -1,5 +1,5 @@
 @import '../../sass/variables.scss';
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 $border-default : 1px solid $light-blue-2x;
 
 #layoutGrid{
@@ -13,16 +13,17 @@ $border-default : 1px solid $light-blue-2x;
 
     .row:last-child{
         border-bottom: $border-default;
-    }
+    }    
 
-    .cell{
-        height: 15px;
-        // width: 10px;
-        // padding: 10px;
-    }
-
-    .cell:not(:last-child){
-        border-right: $border-default;
-    }
+    .gradient-btn{
+        background: linear-gradient(45deg, #ff008e, #124e96);
+        color: white;
+        border: none;
+        outline: none;
+        padding: 5px;
+        text-transform: uppercase;
+        font-family: 'Roboto', sans-serif;
+        letter-spacing: 1px;
+    }    
 }
 

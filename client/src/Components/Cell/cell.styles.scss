@@ -1,0 +1,106 @@
+@import '../../sass/variables.scss';
+
+$border-default : 1px solid $light-blue-2x;
+.cell{
+    height: 15px;
+    transition: all 300ms ease-in-out;
+}
+
+.cell:not(:last-child){
+    border-right: $border-default;
+}
+
+.iterator{
+    animation-name: iterating;
+    animation-duration: 3s;
+}
+
+@keyframes Iterating {
+    0%{
+        background: white;
+    }
+
+    30%{
+        background: blue;
+    }
+
+    60%{
+        background : red;
+    }
+
+    70%{
+        background : yellow;
+    }
+
+    100%{
+        background: red;
+    }
+}
+
+.node-visited {
+  animation-name: visitedAnimation;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+.node-shortest-path{
+    animation-name: shortestPathAnimation;
+    animation-duration: 1s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+}
+
+
+@keyframes shortestPathAnimation{
+    0%{
+        transform: scale(0.2);
+        background: #2d6cdf;
+        border-radius: 100%;
+    }
+
+    // 50%{
+    //     background-color: #2d6cdf;
+    // }
+
+    75%{
+        transform: scale(1.2);
+        background-color: #46c3db;
+    }
+
+    100%{
+        transform: 1;
+        background-color: #f3f169;
+    }
+
+}
+
+@keyframes visitedAnimation {
+  0% {
+    transform: scale(0.3);
+    background-color: $pallet-2-blue;
+    border-radius: 100%;
+  }
+
+  50% {
+    background-color: $pallet-2-light-blue;
+  }
+
+  75% {
+    transform: scale(1.2);
+    background-color: $pallet-2-green;
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: $pallet-2-sky-blue;
+  }
+}

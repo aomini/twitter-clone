@@ -1,72 +1,117 @@
 import * as React from "react";
+import { range as _range, flatten as _flatten } from "lodash";
+import * as gridDocument from "./../../utils/document.utils";
+import { ICellCoordinate, ICell } from "./../../Interfaces/Cell.interface";
+import Cell from "../Cell/Cell";
+
+import {dikjistra} from './../../Algorithms/dikjistra'
+
 import "./grid.styles.scss";
-import TargetIcon from "../Icons/TargetIcon";
-import StartIcon from "../Icons/StartIcon";
 
-type CellCoordinate = {
-    row : number,
-    column : number
-}
-
-const getTotalColumns = (): number => {
-  return Math.floor(window.innerHeight / 10);
+const cells = (
+  rows: number,
+  columns: number,
+  startCell: ICellCoordinate,
+  endCell: ICellCoordinate
+): ICell[][] => {
+  return _range(0, rows).map((row) => {
+    return _range(0, columns).map((column) => {
+      let startNode = false;
+      let endNode = false;
+      if (startCell.row === row && startCell.column === column) startNode = true;
+      if (endCell.row === row && endCell.column === column) endNode = true;
+      return {
+        row,
+        column,
+        distance: startNode ? 0 : Infinity,
+        startNode,
+        endNode,
+        isVisited : false,
+        previousNode : null
+      };
+    });
+  });
 };
-
-const getTotalRows = (): number => {
-  return Math.floor(window.innerWidth / 50);
-};
-
-/** Nodes utils */
-type Node = CellCoordinate;
-const closestNodes = (currentNode : Node): void => {
-    console.log(currentNode)
-}
 
 /**
- * @todo make component of cell & use higher order comonents for icon & also refactor the icon
  * @todo Fix multiple render on begining check with console
- * @todo make target component and start component higher order components
  * @todo write test
  */
 const Grid: React.FC = () => {
-  const [rows] = React.useState<number>(getTotalRows());
-  const [columns] = React.useState<number>(getTotalColumns());
-  const [startCell] = React.useState<CellCoordinate>({
-    row: 5,
-    column: 1
-  })
+  const { getTotalColumns, getTotalRows } = gridDocument;
+  const rows = getTotalRows();
+  const columns = getTotalColumns();
+  const startNode : ICellCoordinate = {row : 10, column: 15};
+  const endNode : ICellCoordinate = {row : 18, column: 35};
 
-  const [targetCell] = React.useState<CellCoordinate>({
-    row: 4,
-    column: 10
-  })
+  const [nodes, setNodes] = React.useState<ICell[][]>();
 
-  closestNodes(startCell)
+  React.useEffect(() => {
+    const computedCells = cells(rows, columns, startNode, endNode);
+    setNodes(computedCells);    
+  }, []);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleVisualize = async (e : React.FormEvent<HTMLButtonElement>) : Promise<string> => {
+    e.preventDefault();
+    const foundDistanceNodes = dikjistra(_flatten(nodes));
+   
+    if(foundDistanceNodes && foundDistanceNodes.length){
+        const myPromises : any[] = [];
+        foundDistanceNodes.forEach((node : ICell, index) => {
+          const el : any = document.querySelector(`[data-coordinate="${node.row}, ${node.column}"]`)
+          if(el) {
+            myPromises.push(new Promise(resolve => {
+                setTimeout(() => {
+                  !node.startNode && !node.endNode && (el.classList.add("node-visited"))
+                  resolve();
+                }, 10 * index)
+            }));
+          }
+        });
+      await Promise.all(myPromises);     
+
+      /** Formulate shortest path */
+      const targetNode = foundDistanceNodes.reverse()[0];   
+
+      const shortestPathNodes = [];
+      let currentNode = targetNode;
+      while(currentNode.previousNode){
+        shortestPathNodes.push(currentNode);
+        currentNode = currentNode.previousNode;
+      }
+
+      shortestPathNodes.reverse().forEach((node : ICell, index) => {
+        const el : any = document.querySelector(`[data-coordinate="${node.row}, ${node.column}"]`)
+        if(el) {
+          setTimeout(() => {
+            !node.startNode && !node.endNode && (el.classList.add("node-shortest-path"));
+          }, 30 * index)
+        }
+      });
+    }
+    return "done";
+  }
 
   return (
     <div id="layoutGrid">
-      {[...Array(rows).keys()].map((row) => (
-        <div
-          className="row"
-          key={row}
-          style={
-            {
-              gridTemplateColumns: `repeat(${columns}, 1fr)`,
-            } as React.CSSProperties
-          }
-        >
-          {[...Array(columns).keys()].map((column) => (
-            <div
-              className="cell"
-              data-coordinate={`${row}, ${column}`}
-              key={`${row}, ${column}`}
-            >
-                {startCell.row === row && startCell.column === column && <StartIcon/>}
-                {targetCell.row === row && targetCell.column === column && <TargetIcon/>}
-            </div>
-          ))}
-        </div>
-      ))}
+      <button onClick={handleVisualize} className="gradient-btn">Visualize Dikjistra</button>
+      {nodes &&
+        nodes.map((rowsWithCells: ICell[], index: number) => (
+          <div
+            className="row"
+            key={index}
+            style={
+              {
+                gridTemplateColumns: `repeat(${columns}, 1fr)`,
+              } as React.CSSProperties
+            }
+          >
+            {rowsWithCells.map((cell: ICell, index : number) => (
+              <Cell {...cell} key={index} />
+            ))}
+          </div>
+        ))}
     </div>
   );
 };
