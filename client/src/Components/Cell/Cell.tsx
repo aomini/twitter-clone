@@ -6,13 +6,24 @@ import EndIcon from "../Icons/TargetIcon";
 
 import "./cell.styles.scss";
 
-const Cell: React.FC<ICell> = ({row, column, startNode = false, endNode = false}) => {
+type MouseEvent = React.MouseEvent<HTMLDivElement>;
+
+export interface ICellWithEvents{
+  onHandleMouseDown : (e : MouseEvent) => void;
+  onHandleMouseEnter : (e : MouseEvent) => void;
+  onHandleMouseUp : (e : MouseEvent) => void;
+}
+
+const Cell: React.FC<ICell & ICellWithEvents> = ({row, column, startNode = false, endNode = false, ...events}) => {
   return (
     <>
       <div
         className="cell"
         data-coordinate={`${row}, ${column}`}
         key={`${row}, ${column}`}
+        onMouseDown={events.onHandleMouseDown}
+        onMouseEnter={events.onHandleMouseEnter}
+        onMouseUp={events.onHandleMouseUp}
       >
         {startNode && <StartIcon/>}
         {endNode && <EndIcon/>}

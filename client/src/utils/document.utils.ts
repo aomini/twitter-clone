@@ -1,5 +1,5 @@
 export const getTotalColumns = (): number => {
-  return Math.floor(document.body.clientWidth / 15);
+  return Math.floor(document.documentElement.clientWidth / 15);
 };
 
 export const getTotalRows = (): number => {

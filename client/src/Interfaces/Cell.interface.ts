@@ -8,5 +8,6 @@ export interface ICell extends ICellCoordinate{
     startNode: boolean;
     endNode: boolean;
     isVisited : boolean;
+    wall ?: boolean;
     previousNode : this | null;
 }

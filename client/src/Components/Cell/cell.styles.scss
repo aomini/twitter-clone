@@ -10,9 +10,33 @@ $border-default : 1px solid $light-blue-2x;
     border-right: $border-default;
 }
 
+.grid-wall{
+    background: $dark-blue;
+    animation-name: wallanimation;
+    animation-duration: 1s;
+}
+
 .iterator{
     animation-name: iterating;
     animation-duration: 3s;
+}
+
+@keyframes wallanimation{
+    0%{
+        transform: scale(0.3);
+    }
+
+    25%{
+        transform: scale(1);
+    }
+
+    50%{
+        transform: scale(1.2);
+    }
+
+    100%{
+        transform: scale(1);
+    }
 }
 
 @keyframes Iterating {

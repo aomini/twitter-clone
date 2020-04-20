@@ -14,15 +14,19 @@ export const updateNeighbouringNodes = (nodes: ICell[]): [] | ICell[] => {
     if (
       (x.row === currentNode.row - 1 &&
         x.column === currentNode.column &&
+        x.wall !== true &&
         !x.isVisited) ||
       (x.row === currentNode.row + 1 &&
         x.column === currentNode.column &&
+        x.wall !== true &&
         !x.isVisited) ||
       (x.row === currentNode.row &&
         x.column === currentNode.column - 1 &&
+        x.wall !== true &&
         !x.isVisited) ||
       (x.row === currentNode.row &&
         x.column === currentNode.column + 1 &&
+        x.wall !== true &&
         !x.isVisited)
     ) {    
         x.distance = currentNode.distance + 1;
@@ -41,7 +45,8 @@ export const dikjistra = (nodes: ICell[]): Array<ICell> | void => {
   while (unvisitedNodes.length) {
     unvisitedNodes = unvisitedNodes.sort((a, b) => a.distance - b.distance);
     // let sortedNodes = unvisitedNodes.sort((a, b) => a.distance - b.distance);
-    const nodesWithUpdatedDistance = updateNeighbouringNodes(unvisitedNodes);
+    if(unvisitedNodes[0].distance === Infinity) return visitedNodes;
+    const nodesWithUpdatedDistance = updateNeighbouringNodes(unvisitedNodes); 
     nodesWithUpdatedDistance[0].isVisited = true;
     visitedNodes.push(nodesWithUpdatedDistance[0]);
     if(nodesWithUpdatedDistance[0] === endingNode){
