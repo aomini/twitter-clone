@@ -7,6 +7,7 @@ import Cell, {ICellWithEvents} from "../Cell/Cell";
 import { dikjistra } from "./../../Algorithms/dikjistra";
 
 import "./grid.styles.scss";
+import { useTheme } from "../ThemeContextProvider/ThemeContextProvider";
 
 const cells = (
   rows: number,
@@ -61,6 +62,7 @@ const Grid: React.FC = () => {
   const columns = getTotalColumns();
   const startNode: ICellCoordinate = { row: 10, column: 15 };
   const endNode: ICellCoordinate = { row: 18, column: 35 };
+  const {dark, toggle} = useTheme();
 
   const [nodes, setNodes] = React.useState<ICell[][]>();
 
@@ -154,9 +156,14 @@ const Grid: React.FC = () => {
 
   return (
     <div id="layoutGrid">
-      <button onClick={handleVisualize} className="gradient-btn">
-        Visualize Dikjistra
-      </button>
+      <div style={{display : 'flex'}}>
+        <button onClick={handleVisualize} className="gradient-btn">
+          Visualize Dikjistra
+        </button>
+        <button onClick={toggle} className="gradient-btn">
+          Toggle
+        </button>
+      </div>
       {nodes &&
         nodes.map((rowsWithCells: ICell[], index: number) => (
           <div

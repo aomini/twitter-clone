@@ -6,9 +6,9 @@ $border-default : 1px solid $light-blue-2x;
     transition: all 300ms ease-in-out;
 }
 
-.cell:not(:last-child){
-    border-right: $border-default;
-}
+// .cell:not(:last-child){
+//     border-right: $border-default;
+// }
 
 .grid-wall{
     background: $dark-blue;
