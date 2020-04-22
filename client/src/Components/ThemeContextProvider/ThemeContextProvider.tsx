@@ -15,7 +15,7 @@ const ThemeContext = React.createContext(defaultContext);
 
 const useTheme = (): IthemeContext => React.useContext(ThemeContext);
 
-const useDarkMode = () : [IthemeContext, any] => {
+const useDarkMode = () : [IthemeContext, React.Dispatch<React.SetStateAction<IthemeContext>>] => {
   const [contextTheme, setContextTheme] = React.useState<IthemeContext>({ dark: false });  
  
   return [contextTheme, setContextTheme];
