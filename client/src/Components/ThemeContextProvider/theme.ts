@@ -18,7 +18,8 @@ export interface ITheme{
 const lightTheme: ITheme = {
     body : "white",
     section : "#ff008e",
-    text: "black",
+    // text: "#124e96",
+    text: "#000042",
     border: "#71bff9",
     btn : {
         primary : {
