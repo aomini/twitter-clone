@@ -73,18 +73,23 @@ const Grid: React.FC = () => {
     setNodes(computedCells);
   }, []);
 
+  const cleanPreviousRunnedClass = (): void => {
+    document.querySelectorAll('.node-visited').forEach(x => x.classList.remove('node-visited'))
+    document.querySelectorAll('.node-shortest-path').forEach(x => x.classList.remove('node-shortest-path'))
+  }
+
   const handleVisualize = async (
     e: React.FormEvent<HTMLButtonElement>
   ): Promise<void> => {
     e.preventDefault();
+    cleanPreviousRunnedClass();
     const foundDistanceNodes = dikjistra(_flatten(nodes));
-
     if (foundDistanceNodes && foundDistanceNodes.length) {
       const myPromises: Promise<string>[] = [];
       foundDistanceNodes.forEach((node: ICell, index) => {
-        const el: any = document.querySelector(
+        const el = document.querySelector(
           `[data-coordinate="${node.row}, ${node.column}"]`
-        );
+        ) as Element;
         if (el) {
           myPromises.push(
             new Promise((resolve) => {
@@ -107,9 +112,9 @@ const Grid: React.FC = () => {
         foundDistanceNodes
       );
       shortestPathNodes.forEach((node: ICell, index) => {
-        const el: any = document.querySelector(
+        const el = document.querySelector(
           `[data-coordinate="${node.row}, ${node.column}"]`
-        );
+        ) as Element;
         if (el) {
           setTimeout(() => {
             !node.startNode &&

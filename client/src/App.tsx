@@ -1,9 +1,10 @@
 import React from "react";
 import styled from 'styled-components'
 import "./App.css";
-import Grid from "./Components/Grid/Grid";
 import { ThemeContextProvider } from "./Components/ThemeContextProvider/ThemeContextProvider";
 import {GlobalStyles} from "./global.styled"
+import Grid from "./Components/Grid/Grid";
+import ActionHeader from "./Components/ActionHeader/ActionHeader"
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <ThemeContextProvider>
         <>
           <GlobalStyles/>
+          <ActionHeader />
           <Grid />
         </>
       </ThemeContextProvider>

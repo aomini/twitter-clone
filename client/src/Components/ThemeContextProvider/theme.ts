@@ -3,8 +3,9 @@ interface IGeneral {
     text : string;
 }
 
-interface IButton{
-    primary : IGeneral
+interface IButton<T>{
+    primary : T,
+    default: T
 }
 
 export interface ITheme{
@@ -12,12 +13,12 @@ export interface ITheme{
     section : string;
     text : string;   
     border : string; 
-    btn : IButton
+    btn : IButton<IGeneral>
 }
 
 const lightTheme: ITheme = {
     body : "white",
-    section : "#ff008e",
+    section : "#EEC236",
     // text: "#124e96",
     text: "#000042",
     border: "#71bff9",
@@ -25,7 +26,11 @@ const lightTheme: ITheme = {
         primary : {
             body: '#ff008e',
             text : 'black'
-        }
+        },
+        default : {
+            body: 'black',
+            text : 'white'
+        },
     }
 }
 
@@ -38,6 +43,10 @@ const darkTheme: ITheme = {
         primary : {
             body: "#1BC6B4",
             text : "#202529"
+        },
+        default : {
+            body: 'black',
+            text : 'white'
         }
     }
 }
