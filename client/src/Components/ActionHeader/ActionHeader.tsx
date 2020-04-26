@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import {ITheme} from "./../ThemeContextProvider/theme"
+import Dropdown from "./../Dropdown/Dropdown"
+import DropdownMenu from "../Dropdown/DropdownMenu";
 
 const HeaderNav = styled.nav`
     display:  flex;
@@ -22,25 +23,6 @@ const Actions = styled.div`
     flex-grow: 0.1;
 `;
 
-const ButtonLink = styled.div`
-    padding : 5px 10px;   
-    color: ${(props): string => props.theme.btn.primary.text};
-    border: none;
-    outline: none;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    width: fit-content;
-    &:hover{
-        cursor: pointer;
-    }
-`;
-
-const DefaultButtonLink = styled(ButtonLink)`
-    background: ${(props: {theme: ITheme}) : string => props.theme.btn.default.body};
-    color: ${(props: {theme: ITheme}) : string => props.theme.btn.default.text};
-    border-radius: 4px;
-`;
-
 const actions = {
 
 }
@@ -50,9 +32,24 @@ const ActionHeader: React.FC = () =>{
         <HeaderNav>
             <h2>Rakesh Shrestha</h2>
             <Actions>
-                <DefaultButtonLink>Visualize</DefaultButtonLink>
-                <ButtonLink>Add Button</ButtonLink>
-                <ButtonLink>Clear</ButtonLink>
+                <Dropdown>
+                    <Dropdown.Button menuLabel="visualize">Visualize</Dropdown.Button>
+                    <Dropdown.Menu menuLabel="visualize">
+                        <DropdownMenu.Item>Dijkistra</DropdownMenu.Item>
+                        <DropdownMenu.Item>A* Algorithm</DropdownMenu.Item>
+                        <DropdownMenu.Item>Breadth First Search</DropdownMenu.Item>
+                        <DropdownMenu.Item>Depth First Search</DropdownMenu.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+
+                <Dropdown> 
+                    <Dropdown.Button menuLabel="v2">v2</Dropdown.Button>
+                    <Dropdown.Menu menuLabel="v2">
+                        <DropdownMenu.Item><div onClick={() => console.log("test")}>test</div></DropdownMenu.Item>
+                        <DropdownMenu.Item>secondd one</DropdownMenu.Item>
+                        <DropdownMenu.Item>third one</DropdownMenu.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
             </Actions>
         </HeaderNav>
     )    
