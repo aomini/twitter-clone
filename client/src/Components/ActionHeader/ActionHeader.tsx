@@ -2,6 +2,7 @@ import React from "react"
 import styled from "styled-components"
 import Dropdown from "./../Dropdown/Dropdown"
 import DropdownMenu from "../Dropdown/DropdownMenu";
+import Button from "../Button/Button"
 
 const HeaderNav = styled.nav`
     display:  flex;
@@ -50,6 +51,7 @@ const ActionHeader: React.FC = () =>{
                         <DropdownMenu.Item>third one</DropdownMenu.Item>
                     </Dropdown.Menu>
                 </Dropdown>
+                <Button primary>Visualize</Button>
             </Actions>
         </HeaderNav>
     )    

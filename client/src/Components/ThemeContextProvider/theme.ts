@@ -5,21 +5,29 @@ interface IGeneral {
 
 interface IButton<T>{
     primary : T,
-    default: T
+    default: T,
 }
 
-export interface ITheme{
+const white = "#fff";
+const black = "#000";
+const accent = "#77e9de";
+const darkAccent = "#1bc6b4";
+const transparentBlue = "#0a4261f2";
+const dirtyYellow = "#c6b91f"
+
+export interface ITheme<T>{
     body : string;
     section : string;
     text : string;   
     border : string; 
-    btn : IButton<IGeneral>
+    btn : IButton<T>;
+    list: T;
+    listHover: T
 }
 
-const lightTheme: ITheme = {
+const lightTheme: ITheme<IGeneral> = {
     body : "white",
     section : "#EEC236",
-    // text: "#124e96",
     text: "#000042",
     border: "#71bff9",
     btn : {
@@ -31,12 +39,20 @@ const lightTheme: ITheme = {
             body: 'black',
             text : 'white'
         },
+    },
+    list: {
+        body: accent,
+        text: white
+    },
+    listHover: {
+        body: white,
+        text: black
     }
 }
 
-const darkTheme: ITheme = {
+const darkTheme: ITheme<IGeneral> = {
     body : "black",
-    section : "red",
+    section : darkAccent,
     text : "white",
     border : '#32383D',
     btn : {
@@ -48,9 +64,17 @@ const darkTheme: ITheme = {
             body: 'black',
             text : 'white'
         }
+    },
+    list: {
+        body: transparentBlue,
+        text: white
+    },
+    listHover: {
+        body: dirtyYellow,
+        text: black
     }
 }
 
-const theme = (mode : string): ITheme => mode === "dark" ? darkTheme : lightTheme 
+const theme = (mode : string): ITheme<IGeneral> => mode === "dark" ? darkTheme : lightTheme 
 
 export {theme}

@@ -19,7 +19,7 @@ const DropdownButton: React.FC<IProps> = ({ children, menuLabel }) => {
   };
 
   return (
-    <Button onHandleClick={handleClick}>
+    <Button onHandleClick={handleClick} dropdown={true}>
       {children}
       &nbsp;
       {(menuLabel === active && <FontAwesomeIcon icon="caret-up" size="lg"/>) || (
