@@ -3,13 +3,14 @@ import styled from "styled-components"
 import Dropdown from "./../Dropdown/Dropdown"
 import DropdownMenu from "../Dropdown/DropdownMenu";
 import Button from "../Button/Button"
-import { useTheme } from "../ThemeContextProvider/ThemeContextProvider";
+import ThemeToggle from '../ThemeToggle/ThemeToggle'
 
 const HeaderNav = styled.nav`
     display:  flex;
     justify-content: space-between;
     align-items: center;
     background: ${(props): string => props.theme.section};
+    transition: background 500ms ease;
     padding: 8px;
 
     >h2{
@@ -29,13 +30,11 @@ interface IProps{
 }
 
 const ActionHeader: React.FC<IProps> = ({onHandleClick, setAlgorithm}) =>{
-    const { toggle } = useTheme();
-
     return (
         <HeaderNav>
             <h2>Rakesh Shrestha</h2>
             <Actions>
-                <Button primary onHandleClick={toggle}>Toggle</Button>
+                {/* <Button primary onHandleClick={toggle}>Toggle</Button> */}
                 <Dropdown>
                     <Dropdown.Button menuLabel="visualize">Visualize</Dropdown.Button>
                     <Dropdown.Menu menuLabel="visualize">
@@ -49,12 +48,13 @@ const ActionHeader: React.FC<IProps> = ({onHandleClick, setAlgorithm}) =>{
                 <Dropdown> 
                     <Dropdown.Button menuLabel="v2">v2</Dropdown.Button>
                     <Dropdown.Menu menuLabel="v2">
-                        <DropdownMenu.Item><div onClick={() => console.log("test")}>test</div></DropdownMenu.Item>
+                        <DropdownMenu.Item><div>test</div></DropdownMenu.Item>
                         <DropdownMenu.Item>secondd one</DropdownMenu.Item>
                         <DropdownMenu.Item>third one</DropdownMenu.Item>
                     </Dropdown.Menu>
                 </Dropdown>
                 <Button primary onHandleClick={onHandleClick}>Visualize</Button>
+                <ThemeToggle/>
             </Actions>
         </HeaderNav>
     )    
