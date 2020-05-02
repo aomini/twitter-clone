@@ -95,7 +95,7 @@ const Grid: React.FC = () => {
           myPromises.push(
             new Promise((resolve) => {
               setTimeout(() => {
-                !node.startNode &&
+                // !node.startNode &&
                   !node.endNode &&
                   el.classList.add("node-visited");
                 resolve("resolved");

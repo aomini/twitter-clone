@@ -32,9 +32,8 @@ interface IProps{
 const ActionHeader: React.FC<IProps> = ({onHandleClick, setAlgorithm}) =>{
     return (
         <HeaderNav>
-            <h2>Rakesh Shrestha</h2>
+            <h2>Rakesh</h2>
             <Actions>
-                {/* <Button primary onHandleClick={toggle}>Toggle</Button> */}
                 <Dropdown>
                     <Dropdown.Button menuLabel="visualize">Visualize</Dropdown.Button>
                     <Dropdown.Menu menuLabel="visualize">

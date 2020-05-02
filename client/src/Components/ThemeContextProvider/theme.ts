@@ -5,27 +5,33 @@ interface IGeneral {
 
 interface IButton<T>{
     primary : T,
-    default: T,
+    default: T    
 }
 
 const white = "#fff";
 const black = "#000";
 const accent = "#77e9de";
+const darkBlue = "#000042"
 const darkAccent = "#1bc6b4";
 const transparentBlue = "#0a4261f2";
 const dirtyYellow = "#c6b91f"
 
 export interface ITheme<T>{
+    label: string,
     body : string;
     section : string;
     text : string;   
     border : string; 
     btn : IButton<T>;
     list: T;
-    listHover: T
+    listHover: T,
+    svg: {
+        fill : string
+    }
 }
 
 const lightTheme: ITheme<IGeneral> = {
+    label: "light",
     body : "white",
     section : "#EEC236",
     text: "#000042",
@@ -47,10 +53,14 @@ const lightTheme: ITheme<IGeneral> = {
     listHover: {
         body: white,
         text: black
+    },
+    svg : {
+        fill: darkBlue
     }
 }
 
 const darkTheme: ITheme<IGeneral> = {
+    label: "dark",
     body : "black",
     section : darkAccent,
     text : "white",
@@ -72,6 +82,9 @@ const darkTheme: ITheme<IGeneral> = {
     listHover: {
         body: dirtyYellow,
         text: black
+    },
+    svg :{
+        fill: black
     }
 }
 

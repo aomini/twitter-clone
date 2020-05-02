@@ -1,4 +1,5 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, css } from "styled-components";
+import { useTheme } from "./Components/ThemeContextProvider/ThemeContextProvider";
 
 export const GlobalStyles = createGlobalStyle`
     body{
@@ -32,6 +33,20 @@ export const GlobalStyles = createGlobalStyle`
     .cell:not(:last-child){
         border-right: 1px solid ${({ theme }) => theme.border};
         transition: border 500ms ease;
+    }
+
+    .cell{
+        svg{
+            fill: ${({ theme }) =>
+              theme.label === "dark" ? theme.text : theme.svg.fill}
+        }
+
+        &.node-shortest-path,
+        &.node-visited{
+            svg{
+                fill: ${({ theme }) => theme.svg.fill}                      
+            }
+        }
     }
 
 `;
