@@ -4,15 +4,13 @@ import "./App.css";
 import { ThemeContextProvider } from "./Components/ThemeContextProvider/ThemeContextProvider";
 import {GlobalStyles} from "./global.styled"
 import Grid from "./Components/Grid/Grid";
-import ActionHeader from "./Components/ActionHeader/ActionHeader"
 
 function App() {
   return (
     <div className="App">
       <ThemeContextProvider>
         <>
-          <GlobalStyles/>
-          <ActionHeader />
+          <GlobalStyles/>          
           <Grid />
         </>
       </ThemeContextProvider>

@@ -9,47 +9,54 @@ const ButtonLink = styled.button<any>`
   outline: none;
   text-transform: uppercase;
   letter-spacing: 1px;
-  width: fit-content;  
-  
-  ${(props): string => props.dropdown ? `
+  width: fit-content;
+
+  ${(props): string =>
+    props.dropdown
+      ? `
     width: 150px;
     text-align: center;
     background: transparent;
-  `: ``}
+  `
+      : ``}
 
-  ${(props): string => props.default ? `
+  ${(props): string =>
+    props.default
+      ? `
     background: ${props.theme.btn.default.body};
     color: ${props.theme.btn.default.text};
     border-radius: 4px;
-  `: ``}
+  `
+      : ``}
 
   &:hover {
     cursor: pointer;
   }
 
-  &:focus{
+  &:focus {
     outline: none;
   }
 `;
 
 const DefaultButtonLink = styled(ButtonLink)`
-  background: ${(props): string =>
-    props.theme.btn.default.body};
+  background: ${(props): string => props.theme.btn.default.body};
   color: ${(props): string => props.theme.btn.default.text};
   border-radius: 4px;
 `;
 
 interface IButtonProps {
-  onHandleClick?: (e: React.MouseEvent<HTMLElement>) => void;
-  dropdown ?: boolean;
-  primary ?: boolean;
+  onHandleClick?: (
+    e: React.MouseEvent<HTMLElement>
+  ) => void | Promise<void>;
+  dropdown?: boolean;
+  primary?: boolean;
 }
 
 const Button: React.FC<IButtonProps> = ({
   children,
   onHandleClick,
   primary = false,
-  dropdown = false
+  dropdown = false,
 }) => {
   return (
     <ButtonLink onClick={onHandleClick} dropdown={dropdown} default={primary}>

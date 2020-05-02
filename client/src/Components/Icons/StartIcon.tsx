@@ -1,11 +1,5 @@
 import React from "react"
-import styled from 'styled-components';
-
-const IconSvg = styled.svg<{theme: {theme: string}}>`
-    height : 100%;
-    width: 100%;
-    fill: ${(props): string => props.theme.text}
-`;
+import {IconSvg} from './IconStyles'
 
 const StartIcon : React.FC = () => {
     return (

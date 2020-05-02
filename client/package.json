@@ -29,6 +29,7 @@
     "typescript": "~3.7.2"
   },
   "scripts": {
+    "start": "react-scripts start",
     "lint": "npx eslint --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore .",
     "check:types": "tsc",
     "pretty": "npx prettier --ignore-path .gitignore \"**/*.(js|json|jsx|ts|tsx)\" --write",

@@ -3,6 +3,7 @@ import styled from "styled-components"
 import Dropdown from "./../Dropdown/Dropdown"
 import DropdownMenu from "../Dropdown/DropdownMenu";
 import Button from "../Button/Button"
+import { useTheme } from "../ThemeContextProvider/ThemeContextProvider";
 
 const HeaderNav = styled.nav`
     display:  flex;
@@ -16,23 +17,25 @@ const HeaderNav = styled.nav`
     }
 `;
 
-const HeaderLogo = styled.div`
-`
 const Actions = styled.div`
     display: flex;
     justify-content: space-evenly;
     flex-grow: 0.1;
 `;
 
-const actions = {
-
+interface IProps{
+    onHandleClick: (e: React.MouseEvent<HTMLElement>) => Promise<void>,
+    setAlgorithm ?: () => void
 }
 
-const ActionHeader: React.FC = () =>{
+const ActionHeader: React.FC<IProps> = ({onHandleClick, setAlgorithm}) =>{
+    const { toggle } = useTheme();
+
     return (
         <HeaderNav>
             <h2>Rakesh Shrestha</h2>
             <Actions>
+                <Button primary onHandleClick={toggle}>Toggle</Button>
                 <Dropdown>
                     <Dropdown.Button menuLabel="visualize">Visualize</Dropdown.Button>
                     <Dropdown.Menu menuLabel="visualize">
@@ -51,7 +54,7 @@ const ActionHeader: React.FC = () =>{
                         <DropdownMenu.Item>third one</DropdownMenu.Item>
                     </Dropdown.Menu>
                 </Dropdown>
-                <Button primary>Visualize</Button>
+                <Button primary onHandleClick={onHandleClick}>Visualize</Button>
             </Actions>
         </HeaderNav>
     )    

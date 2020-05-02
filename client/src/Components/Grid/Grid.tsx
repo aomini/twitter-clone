@@ -2,12 +2,10 @@ import * as React from "react";
 import { range as _range, flatten as _flatten } from "lodash";
 import * as gridDocument from "./../../utils/document.utils";
 import { ICellCoordinate, ICell } from "./../../Interfaces/Cell.interface";
-import Cell, {ICellWithEvents} from "../Cell/Cell";
-
+import Cell, { ICellWithEvents } from "../Cell/Cell";
+import ActionHeader from "../ActionHeader/ActionHeader";
 import { dikjistra } from "./../../Algorithms/dikjistra";
-
 import "./grid.styles.scss";
-import { useTheme } from "../ThemeContextProvider/ThemeContextProvider";
 
 const cells = (
   rows: number,
@@ -29,20 +27,20 @@ const cells = (
         startNode,
         endNode,
         isVisited: false,
-        wall : false,
+        wall: false,
         previousNode: null,
       };
     });
   });
 };
 
-const isBlocked = (targetNode : ICell): boolean => {
+const isBlocked = (targetNode: ICell): boolean => {
   return !targetNode.endNode;
-}
+};
 
 const getShortedPathNodes = (foundDistanceNodes: ICell[]): ICell[] => {
   const targetNode: ICell = foundDistanceNodes.reverse()[0];
-  if(isBlocked(targetNode)) return [];
+  if (isBlocked(targetNode)) return [];
   const shortestPathNodes: ICell[] = [];
   let currentNode = targetNode;
   while (currentNode.previousNode) {
@@ -62,7 +60,6 @@ const Grid: React.FC = () => {
   const columns = getTotalColumns();
   const startNode: ICellCoordinate = { row: 10, column: 15 };
   const endNode: ICellCoordinate = { row: 18, column: 35 };
-  const {dark, toggle} = useTheme();
 
   const [nodes, setNodes] = React.useState<ICell[][]>();
 
@@ -71,15 +68,19 @@ const Grid: React.FC = () => {
   React.useEffect(() => {
     const computedCells = cells(rows, columns, startNode, endNode);
     setNodes(computedCells);
-  }, []);
+  }, [rows, columns]);
 
   const cleanPreviousRunnedClass = (): void => {
-    document.querySelectorAll('.node-visited').forEach(x => x.classList.remove('node-visited'))
-    document.querySelectorAll('.node-shortest-path').forEach(x => x.classList.remove('node-shortest-path'))
-  }
+    document
+      .querySelectorAll(".node-visited")
+      .forEach((x) => x.classList.remove("node-visited"));
+    document
+      .querySelectorAll(".node-shortest-path")
+      .forEach((x) => x.classList.remove("node-shortest-path"));
+  };
 
   const handleVisualize = async (
-    e: React.FormEvent<HTMLButtonElement>
+    e: React.MouseEvent<HTMLElement>
   ): Promise<void> => {
     e.preventDefault();
     cleanPreviousRunnedClass();
@@ -117,86 +118,85 @@ const Grid: React.FC = () => {
         ) as Element;
         if (el) {
           setTimeout(() => {
-            !node.startNode &&
-              !node.endNode &&
-              el.classList.add("node-shortest-path");
+            // !node.startNode &&
+            // !node.endNode &&
+            el.classList.add("node-shortest-path");
           }, 30 * index);
         }
       });
     }
   };
 
-  const handleMouseDown = (
-    e: React.MouseEvent<HTMLDivElement>
-  ): void => {
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>): void => {
     setDraw(true);
   };
 
-  const handleMouseEnter = (
-    e: React.MouseEvent<HTMLDivElement>
-  ): void => {
-    if(draw && nodes){
-      const {target} = e;
-      const currentTarget : EventTarget = target;
-      (currentTarget as HTMLElement).classList.add('grid-wall')
-      const coordinate = (currentTarget as HTMLElement).getAttribute('data-coordinate') as string
-      const [row, column] = coordinate.split(',')
+  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>): void => {
+    if (draw && nodes) {
+      const { target } = e;
+      const currentTarget: EventTarget = target;
+      (currentTarget as HTMLElement).classList.add("grid-wall");
+      const coordinate = (currentTarget as HTMLElement).getAttribute(
+        "data-coordinate"
+      ) as string;
+      const [row, column] = coordinate.split(",");
       /** update the node with a wall true */
-      const newRowNodes: ICell[] | undefined = nodes && nodes[parseInt(row)].map((node: ICell) => {
-        if(node.column === parseInt(column.trim())){
-          node.wall = true;
-        }
-        return node;
-      })
-      const updatedNodes : ICell[][] = nodes;
+      const newRowNodes: ICell[] | undefined =
+        nodes &&
+        nodes[parseInt(row)].map((node: ICell) => {
+          if (node.column === parseInt(column.trim())) {
+            node.wall = true;
+          }
+          return node;
+        });
+      const updatedNodes: ICell[][] = nodes;
       updatedNodes[parseInt(row)] = newRowNodes;
-      setNodes(updatedNodes)
+      setNodes(updatedNodes);
     }
   };
 
   const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>): void => {
-    setDraw(false)
-    console.log("stop drawing")
+    setDraw(false);
+    console.log("stop drawing");
   };
 
   return (
-    <div id="layoutGrid">
-      <div style={{display : 'flex'}}>
+    <>
+      <ActionHeader onHandleClick={handleVisualize}/>
+      <div id="layoutGrid">
+        {/* <div style={{display : 'flex'}}>
         <button onClick={handleVisualize} className="gradient-btn">
           Visualize Dikjistra
         </button>
         <button onClick={toggle} className="gradient-btn">
           Toggle
         </button>
+      </div> */}
+        {nodes &&
+          nodes.map((rowsWithCells: ICell[], index: number) => (
+            <div
+              className="row"
+              key={index}
+              style={
+                {
+                  gridTemplateColumns: `repeat(${columns}, 1fr)`,
+                  gridAutoFlow: "column",
+                } as React.CSSProperties
+              }
+            >
+              {rowsWithCells.map((cell: ICell, index: number) => {
+                const compositeObject = {
+                  ...cell,
+                  onHandleMouseDown: handleMouseDown,
+                  onHandleMouseEnter: handleMouseEnter,
+                  onHandleMouseUp: handleMouseUp,
+                } as ICell & ICellWithEvents;
+                return <Cell {...compositeObject} key={index} />;
+              })}
+            </div>
+          ))}
       </div>
-      {nodes &&
-        nodes.map((rowsWithCells: ICell[], index: number) => (
-          <div
-            className="row"
-            key={index}
-            style={
-              {
-                gridTemplateColumns: `repeat(${columns}, 1fr)`,
-                gridAutoFlow : 'column'
-              } as React.CSSProperties
-            }
-          >
-            {rowsWithCells.map((cell: ICell, index: number) => {
-              const compositeObject = {
-                ...cell,
-                onHandleMouseDown : handleMouseDown,
-                onHandleMouseEnter: handleMouseEnter,
-                onHandleMouseUp : handleMouseUp
-              } as ICell & ICellWithEvents;
-              return (<Cell
-                {...compositeObject}
-                key={index}
-                
-              />)
-            })}
-          </div>
-        ))}
-    </div>
+    </>
   );
 };
 

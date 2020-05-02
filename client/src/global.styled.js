@@ -6,6 +6,7 @@ export const GlobalStyles = createGlobalStyle`
         color : ${({ theme }) => theme.text};
         font-family: 'Roboto', sans-serif;
         font-size: 14px;
+        margin:0;
     }
 
     button{
