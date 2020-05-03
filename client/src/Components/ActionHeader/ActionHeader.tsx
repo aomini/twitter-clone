@@ -35,7 +35,7 @@ const ActionHeader: React.FC<IProps> = ({onHandleClick, setAlgorithm}) =>{
             <h2>Rakesh</h2>
             <Actions>
                 <Dropdown>
-                    <Dropdown.Button menuLabel="visualize">Visualize</Dropdown.Button>
+                    <Dropdown.Button menuLabel="visualize">Dijkistr</Dropdown.Button>
                     <Dropdown.Menu menuLabel="visualize">
                         <DropdownMenu.Item>Dijkistra</DropdownMenu.Item>
                         <DropdownMenu.Item>A* Algorithm</DropdownMenu.Item>
@@ -44,14 +44,14 @@ const ActionHeader: React.FC<IProps> = ({onHandleClick, setAlgorithm}) =>{
                     </Dropdown.Menu>
                 </Dropdown>
 
-                <Dropdown> 
+                {/* <Dropdown> 
                     <Dropdown.Button menuLabel="v2">v2</Dropdown.Button>
                     <Dropdown.Menu menuLabel="v2">
                         <DropdownMenu.Item><div>test</div></DropdownMenu.Item>
                         <DropdownMenu.Item>secondd one</DropdownMenu.Item>
                         <DropdownMenu.Item>third one</DropdownMenu.Item>
                     </Dropdown.Menu>
-                </Dropdown>
+                </Dropdown> */}
                 <Button primary onHandleClick={onHandleClick}>Visualize</Button>
                 <ThemeToggle/>
             </Actions>
