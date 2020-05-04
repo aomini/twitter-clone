@@ -56,3 +56,4 @@ export const dikjistra = (nodes: ICell[]): Array<ICell> | void => {
   }
   return visitedNodes;
 };
+

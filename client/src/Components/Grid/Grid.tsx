@@ -80,7 +80,7 @@ const Grid: React.FC = () => {
   };
 
   const handleVisualize = async (
-    e: React.MouseEvent<HTMLElement>
+    e: React.MouseEvent<HTMLElement>,
   ): Promise<void> => {
     e.preventDefault();
     cleanPreviousRunnedClass();

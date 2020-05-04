@@ -42,7 +42,12 @@ const DropdownItemDiv = styled.div<any>`
 `;
 
 export interface NamedChildrenSlots{
-    Item: React.FC,
+    Item: React.FC<IDropdownItem>,
+}
+
+export interface IDropdownItem{
+    onHandleMouseDown ?: (index: number) => void
+    index: number;
 }
 
 export interface IProps{
@@ -57,9 +62,12 @@ const DropdownMenu: React.FC<IProps> & NamedChildrenSlots = ({children, menuLabe
     return <DropdownMenuDiv open={active === menuLabel}>{children}</DropdownMenuDiv>
 }
 
-const DropdownItem: React.FC = ({children}) => {
+const DropdownItem: React.FC<IDropdownItem> = ({children, index, onHandleMouseDown}) => {
     if (!children) {
         throw new Error("Children is mandatory");
+    }
+    if(onHandleMouseDown && index){
+      return <DropdownItemDiv onMouseDown={():void => onHandleMouseDown(index)}>{children}</DropdownItemDiv>;  
     }
     return <DropdownItemDiv>{children}</DropdownItemDiv>;
 }

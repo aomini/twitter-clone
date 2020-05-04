@@ -4,6 +4,8 @@ import Dropdown from "./../Dropdown/Dropdown";
 import DropdownMenu from "../Dropdown/DropdownMenu";
 import Button from "../Button/Button";
 import ThemeToggle from "../ThemeToggle/ThemeToggle";
+import { ICell } from "./../../Interfaces/Cell.interface";
+import {dikjistra, BFS, DFS} from "./../../Algorithms/Algorithms"
 
 const HeaderNav = styled.nav`
   display: flex;
@@ -31,6 +33,7 @@ interface IProps {
 interface IList {
   active?: boolean;
   label: string;
+  algorithm: (nodes: ICell[]) => ICell[] | void;
 }
 
 interface IAlgorithmContext {
@@ -44,10 +47,10 @@ const IActionHeaderContext = React.createContext<IAlgorithmContext>({
 
 const getAlgorithms = (): IList[] => {
   const lists: IList[] = [
-    { label: "Dijkistra", active: true },
-    { label: "A* Algorithm" },
-    { label: "Breadth First Algorithm" },
-    { label: "Depth First Algorithm" },
+    { label: "Dijkistra", active: true, algorithm: dikjistra},
+    { label: "A* Algorithm", algorithm: dikjistra},
+    { label: "Breadth First Algorithm", algorithm: BFS },
+    { label: "Depth First Algorithm", algorithm: DFS },
   ];
   return lists;
 };
@@ -64,12 +67,10 @@ const ActionHeader: React.FC<IProps> = ({ onHandleClick }) => {
   const [activeAlgorithm, setActiveAlgorithm] = React.useState<IList | null>();
 
   React.useEffect(() => {
-    console.log("use effect occuring");
     setActiveAlgorithm(getActiveAlgorithm(algorithms));
   }, [algorithms]);
 
   const handleAlgorithmSelection = (index: number): void => {
-      console.log("click")
     const updatedAlgo = algorithms.map((x: IList, i: number) => {
       index === i ? (x.active = true) : (x.active = false);
       return x;
@@ -89,8 +90,10 @@ const ActionHeader: React.FC<IProps> = ({ onHandleClick }) => {
             {algorithms.map((x: IList, index: number) => (
               <DropdownMenu.Item
                 key={x.label}
+                index={index}
+                onHandleMouseDown={handleAlgorithmSelection}
               >
-                <div onClick={(): void => handleAlgorithmSelection(index)}>{x.label}</div>
+                {x.label}
               </DropdownMenu.Item>
             ))}
           </Dropdown.Menu>
