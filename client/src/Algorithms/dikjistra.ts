@@ -1,13 +1,5 @@
-import { find as _find } from "lodash";
 import { ICell } from "./../Interfaces/Cell.interface";
 import {cloneDeep as _deepClone} from 'lodash'
-
-type ICellNodes = ICell | {};
-
-export const startNode = (nodes: ICell[]): ICellNodes =>
-  _find(nodes, "startNode") || {};
-export const endNode = (nodes: ICell[]): ICellNodes =>
-  _find(nodes, "endNode") || {};
 
 export const updateNeighbouringNodes = (nodes: ICell[]): [] | ICell[] => {
   const currentNode = nodes[0];

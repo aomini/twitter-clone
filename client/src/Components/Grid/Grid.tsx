@@ -58,8 +58,8 @@ const Grid: React.FC = () => {
   const { getTotalColumns, getTotalRows } = gridDocument;
   const rows = getTotalRows();
   const columns = getTotalColumns();
-  const startNode: ICellCoordinate = { row: 10, column: 15 };
-  const endNode: ICellCoordinate = { row: 18, column: 35 };
+  const startNode: ICellCoordinate = { row: 2, column: 3 };
+  const endNode: ICellCoordinate = { row: 3, column: 12 };
 
   const [nodes, setNodes] = React.useState<ICell[][]>();
 
@@ -81,13 +81,14 @@ const Grid: React.FC = () => {
 
   const handleVisualize = async (
     e: React.MouseEvent<HTMLElement>,
+    algorithm: Function
   ): Promise<void> => {
     e.preventDefault();
     cleanPreviousRunnedClass();
-    const foundDistanceNodes = dikjistra(_flatten(nodes));
+    const foundDistanceNodes = algorithm(_flatten(nodes));
     if (foundDistanceNodes && foundDistanceNodes.length) {
       const myPromises: Promise<string>[] = [];
-      foundDistanceNodes.forEach((node: ICell, index) => {
+      foundDistanceNodes.forEach((node: ICell, index: number) => {
         const el = document.querySelector(
           `[data-coordinate="${node.row}, ${node.column}"]`
         ) as Element;

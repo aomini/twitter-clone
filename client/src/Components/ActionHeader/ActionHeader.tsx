@@ -5,7 +5,7 @@ import DropdownMenu from "../Dropdown/DropdownMenu";
 import Button from "../Button/Button";
 import ThemeToggle from "../ThemeToggle/ThemeToggle";
 import { ICell } from "./../../Interfaces/Cell.interface";
-import {dikjistra, BFS, DFS} from "./../../Algorithms/Algorithms"
+import { dikjistra, aStar, BFS, DFS } from "./../../Algorithms/Algorithms";
 
 const HeaderNav = styled.nav`
   display: flex;
@@ -27,7 +27,10 @@ const Actions = styled.div`
 `;
 
 interface IProps {
-  onHandleClick: (e: React.MouseEvent<HTMLElement>) => Promise<void>;
+  onHandleClick: (
+    e: React.MouseEvent<HTMLElement>,
+    algorithm: Function
+  ) => Promise<void>;
 }
 
 interface IList {
@@ -36,25 +39,30 @@ interface IList {
   algorithm: (nodes: ICell[]) => ICell[] | void;
 }
 
-interface IAlgorithmContext {
-  setAlgorithm?: () => void;
-  algorithmIndex: number;
-}
+// interface IAlgorithmContext {
+//   setAlgorithm?: () => void;
+//   algorithmIndex: number;
+// }
 
-const IActionHeaderContext = React.createContext<IAlgorithmContext>({
-  algorithmIndex: 0,
-});
+// const IActionHeaderContext = React.createContext<IAlgorithmContext>({
+//   algorithmIndex: 0,
+// });
 
 const getAlgorithms = (): IList[] => {
   const lists: IList[] = [
-    { label: "Dijkistra", active: true, algorithm: dikjistra},
-    { label: "A* Algorithm", algorithm: dikjistra},
+    { label: "Dijkistra", algorithm: dikjistra },
+    { label: "A* Algorithm", algorithm: aStar, active: true},
     { label: "Breadth First Algorithm", algorithm: BFS },
     { label: "Depth First Algorithm", algorithm: DFS },
   ];
   return lists;
 };
 
+/**
+ * Get active algorithm
+ * @param IList[] lists
+ * @return ?IList
+ */
 const getActiveAlgorithm = <T extends IList>(lists: T[]): T | null => {
   const activeList = lists.filter((x: T) => x.active);
   return activeList ? activeList[0] : null;
@@ -98,9 +106,16 @@ const ActionHeader: React.FC<IProps> = ({ onHandleClick }) => {
             ))}
           </Dropdown.Menu>
         </Dropdown>
-        <Button primary onHandleClick={onHandleClick}>
-          Visualize
-        </Button>
+        {activeAlgorithm && (
+          <Button
+            primary
+            onHandleClick={(e: React.MouseEvent<HTMLElement>): Promise<void> =>
+              onHandleClick(e, activeAlgorithm.algorithm)
+            }
+          >
+            Visualize
+          </Button>
+        )}
         <ThemeToggle />
       </Actions>
     </HeaderNav>
