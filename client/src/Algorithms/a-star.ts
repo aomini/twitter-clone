@@ -1,8 +1,8 @@
 import { cloneDeep as _deepClone, find as _find } from "lodash";
 import { ICell } from "../Interfaces/Cell.interface";
-import { startNode, endNode, ICellNodes } from "./helpers";
+import { startNode, endNode } from "./helpers";
 
-// type ICellHeuristic =
+type ICellHeuristic = ICell & {hcost: number}
 
 /**
  * Calculates the hcost i.e distance from end node using diagonal heuristics
@@ -96,14 +96,19 @@ export const getDiagonalNeighbours = <T extends ICell & { hcost: number }>(
  *
  */
 export const aStar = (nodes: ICell[]): ICell[] | void => {
-  const goalNode: ICellNodes = endNode(nodes);
+  const goalNode  = endNode(nodes) as ICellHeuristic;
+  const startingNode = startNode(nodes) as ICellHeuristic;
+  startingNode.hcost = 0;
+
   let unvisitedNodes = _deepClone(nodes);
   const visitedNodes = [];
+  
+  let current = startingNode;
+
   let count = 4;
-  while (count < 5) {
-    count++;
-    unvisitedNodes = unvisitedNodes.sort((a, b) => a.distance - b.distance);
-    const current = unvisitedNodes[0];
+  while (unvisitedNodes.length) {
+    // count++;
+    
     const nodesWithUpdatedNeighbours = getDiagonalNeighbours<
       ICell & { hcost: number }
     >(
@@ -111,16 +116,21 @@ export const aStar = (nodes: ICell[]): ICell[] | void => {
       goalNode as ICell & { hcost: number },
       unvisitedNodes as Array<ICell & { hcost: number }>
     );
-    console.log("updated nodes are");
-    console.log(
-      nodesWithUpdatedNeighbours.sort((a, b) => a.distance - b.distance)
-    );
-    visitedNodes.push({ ...current, isVisited: true });
+    // console.log("updated nodes are");
+    // console.log(
+    //   nodesWithUpdatedNeighbours.sort((a, b) => a.distance - b.distance)
+    // );
+    // visitedNodes.push({ ...current, isVisited: true });
     if (current.endNode) {
+      visitedNodes.push(current);
+      console.log(visitedNodes)
       return visitedNodes;
     }
+    nodesWithUpdatedNeighbours[0].isVisited = true;
+    visitedNodes.push(nodesWithUpdatedNeighbours[0])
+    unvisitedNodes = nodesWithUpdatedNeighbours.filter((x) => !x.isVisited).sort((a, b) => a.hcost - b.hcost);
+    current = unvisitedNodes[0] as ICellHeuristic;
   }
-  return;
   console.log(visitedNodes);
   return visitedNodes;
 };
