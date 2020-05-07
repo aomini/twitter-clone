@@ -24,6 +24,7 @@ const cells = (
         row,
         column,
         distance: startNode ? 0 : Infinity,
+        hcost: startNode ? 0 : Infinity,
         startNode,
         endNode,
         isVisited: false,
@@ -59,7 +60,7 @@ const Grid: React.FC = () => {
   const rows = getTotalRows();
   const columns = getTotalColumns();
   const startNode: ICellCoordinate = { row: 2, column: 3 };
-  const endNode: ICellCoordinate = { row: 3, column: 12 };
+  const endNode: ICellCoordinate = { row: 20, column: 26 };
 
   const [nodes, setNodes] = React.useState<ICell[][]>();
 

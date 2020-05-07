@@ -2,8 +2,6 @@ import { cloneDeep as _deepClone, find as _find } from "lodash";
 import { ICell } from "../Interfaces/Cell.interface";
 import { startNode, endNode } from "./helpers";
 
-type ICellHeuristic = ICell & {hcost: number}
-
 /**
  * Calculates the hcost i.e distance from end node using diagonal heuristics
  * @reference http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html#a-stars-use-of-the-heuristic
@@ -11,7 +9,7 @@ type ICellHeuristic = ICell & {hcost: number}
  * @var D2 diagonally (use pytharus theorem if distance is 1 then root of 1sq + 1sq) Is mutiplied by Scale distance D to get non floating number
  * @param node
  * @param endNode
- * @return number
+ * @returns {number}
  */
 function hcost(node: ICell, endNode: ICell): number {
   const D = 10;
@@ -26,10 +24,11 @@ function hcost(node: ICell, endNode: ICell): number {
  * First updates the four direction nodes (top, bottom, left & right)
  * Secondly checks and updates the diagonal nodes (left-top , left-bottom, right-top & right-bottom)
  * @todo refactor manhattan distance is same as dikjistra logic
- * @param currentNode
- * @param nodes
+ * @param {T} currentNode 
+ * @param {T} nodes
+ * @returns {T[]}
  */
-export const getDiagonalNeighbours = <T extends ICell & { hcost: number }>(
+export const getDiagonalNeighbours = <T extends ICell>(
   currentNode: T,
   goalNode: T,
   nodes: T[]
@@ -96,8 +95,11 @@ export const getDiagonalNeighbours = <T extends ICell & { hcost: number }>(
  *
  */
 export const aStar = (nodes: ICell[]): ICell[] | void => {
-  const goalNode  = endNode(nodes) as ICellHeuristic;
-  const startingNode = startNode(nodes) as ICellHeuristic;
+  const goalNode  = endNode(nodes) as ICell;
+  if(!Object.keys(goalNode).length){
+    return [] as ICell[];
+  }
+  const startingNode = startNode(nodes) as ICell;
   startingNode.hcost = 0;
 
   let unvisitedNodes = _deepClone(nodes);
@@ -105,32 +107,25 @@ export const aStar = (nodes: ICell[]): ICell[] | void => {
   
   let current = startingNode;
 
-  let count = 4;
-  while (unvisitedNodes.length) {
-    // count++;
-    
-    const nodesWithUpdatedNeighbours = getDiagonalNeighbours<
-      ICell & { hcost: number }
-    >(
-      current as ICell & { hcost: number },
-      goalNode as ICell & { hcost: number },
-      unvisitedNodes as Array<ICell & { hcost: number }>
+  while (unvisitedNodes.length) {    
+    const nodesWithUpdatedNeighbours = getDiagonalNeighbours(
+      current,
+      goalNode,
+      unvisitedNodes
     );
-    // console.log("updated nodes are");
-    // console.log(
-    //   nodesWithUpdatedNeighbours.sort((a, b) => a.distance - b.distance)
-    // );
-    // visitedNodes.push({ ...current, isVisited: true });
+    
     if (current.endNode) {
       visitedNodes.push(current);
-      console.log(visitedNodes)
       return visitedNodes;
     }
-    nodesWithUpdatedNeighbours[0].isVisited = true;
-    visitedNodes.push(nodesWithUpdatedNeighbours[0])
-    unvisitedNodes = nodesWithUpdatedNeighbours.filter((x) => !x.isVisited).sort((a, b) => a.hcost - b.hcost);
-    current = unvisitedNodes[0] as ICellHeuristic;
+    // nodesWithUpdatedNeighbours[0].isVisited = true;
+    // visitedNodes.push(nodesWithUpdatedNeighbours[0])
+    unvisitedNodes = nodesWithUpdatedNeighbours.sort((a, b) => a.hcost - b.hcost);
+    unvisitedNodes[0].isVisited = true;
+    current = unvisitedNodes[0];
+    visitedNodes.push(current);    
+    unvisitedNodes = nodesWithUpdatedNeighbours.sort((a, b) => a.hcost - b.hcost).filter((x) => !x.isVisited)
   }
-  console.log(visitedNodes);
-  return visitedNodes;
+  // console.log(visitedNodes);
+  // return visitedNodes;
 };

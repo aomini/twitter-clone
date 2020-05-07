@@ -50,7 +50,7 @@ interface IList {
 
 const getAlgorithms = (): IList[] => {
   const lists: IList[] = [
-    { label: "Dijkistra", algorithm: dikjistra },
+    { label: "Dijkistra", algorithm: dikjistra, active: false },
     { label: "A* Algorithm", algorithm: aStar, active: true},
     { label: "Breadth First Algorithm", algorithm: BFS },
     { label: "Depth First Algorithm", algorithm: DFS },
