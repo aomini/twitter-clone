@@ -1,4 +1,5 @@
 import React, {ReactChild} from "react"
+import {Subject} from "rxjs"
 import {IProps as IDropdownToggle} from './DropdownButton'
 import {NamedChildrenSlots as IMenuNamedChildrenSlots, IProps as IMenuProps} from './DropdownMenu'
 import DropdownButton from "./DropdownButton"
@@ -6,6 +7,8 @@ import DropdownMenu from "./DropdownMenu";
 
 interface IProps{
     children: Array<ReactChild | NamedChildrenSlots>,
+    /** Subject for menu events */
+    menuSubject$ : Subject<string>
 }
 
 interface NamedChildrenSlots{
@@ -22,7 +25,7 @@ export const DropdownContext = React.createContext<IContextProps>({
     active: ''
 });
 
-const Dropdown: React.FC<IProps> & NamedChildrenSlots = ({children}) => {
+const Dropdown: React.FC<IProps> & NamedChildrenSlots = ({children, menuSubject$}) => {
     const [activeDropdown, setActiveDropdown] = React.useState<Readonly<string>>(""); 
 
     const activateDropdown = (dropdown: string): void => {
@@ -33,6 +36,16 @@ const Dropdown: React.FC<IProps> & NamedChildrenSlots = ({children}) => {
         activateDropdown("")   
     }
 
+    menuSubject$.subscribe((response) => {
+        if(response === "menu clicked"){
+            resetDropdown();
+        }
+    })
+
+    const blurEventEmmiter = () => {
+        menuSubject$.next("menu clicked")
+    }    
+
     if (!children) {
         throw new Error("Children is mandatory");
     }
@@ -41,7 +54,7 @@ const Dropdown: React.FC<IProps> & NamedChildrenSlots = ({children}) => {
             active: activeDropdown,
             activateDropdown
         }}>
-            <div onBlur={resetDropdown} tabIndex={0}>{children}</div>
+            <div tabIndex={0} onBlur={blurEventEmmiter}>{children}</div>
         </DropdownContext.Provider>
     )
 }

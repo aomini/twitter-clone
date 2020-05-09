@@ -1,4 +1,5 @@
 import * as React from "react";
+import {Subject} from 'rxjs'
 import { range as _range, flatten as _flatten } from "lodash";
 import * as gridDocument from "./../../utils/document.utils";
 import { ICellCoordinate, ICell } from "./../../Interfaces/Cell.interface";
@@ -56,6 +57,9 @@ const getShortedPathNodes = (foundDistanceNodes: ICell[]): ICell[] => {
  * @todo write test
  */
 const Grid: React.FC = () => {
+  /** Convention for observables $ */
+  const menuSubject$: Subject<string> = new Subject<string>();
+
   const { getTotalColumns, getTotalRows } = gridDocument;
   const rows = getTotalRows();
   const columns = getTotalColumns();
@@ -131,6 +135,7 @@ const Grid: React.FC = () => {
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>): void => {
     setDraw(true);
+    menuSubject$.next("make_walls");
   };
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>): void => {
@@ -158,13 +163,17 @@ const Grid: React.FC = () => {
   };
 
   const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>): void => {
-    setDraw(false);
-    console.log("stop drawing");
+    menuSubject$.subscribe((response) => {
+      if(response === "make_walls"){
+        setDraw(false);
+        console.log("stop drawing")
+      }
+    })    
   };
 
   return (
     <>
-      <ActionHeader onHandleClick={handleVisualize}/>
+      <ActionHeader onHandleClick={handleVisualize} menuSubject={menuSubject$}/>
       <div id="layoutGrid">
         {/* <div style={{display : 'flex'}}>
         <button onClick={handleVisualize} className="gradient-btn">

@@ -1,4 +1,5 @@
 import React from "react";
+import {Subject} from "rxjs";
 import styled from "styled-components";
 import Dropdown from "./../Dropdown/Dropdown";
 import DropdownMenu from "../Dropdown/DropdownMenu";
@@ -30,6 +31,9 @@ interface IProps {
     e: React.MouseEvent<HTMLElement>,
     algorithm: Function
   ) => Promise<void>;
+
+  /** Subject for menu events */
+  menuSubject : Subject<string>
 }
 
 interface IList {
@@ -62,7 +66,7 @@ const getActiveAlgorithm = <T extends IList>(lists: T[]): T | null => {
   return activeList ? activeList[0] : null;
 };
 
-const ActionHeader: React.FC<IProps> = ({ onHandleClick }) => {
+const ActionHeader: React.FC<IProps> = ({ onHandleClick, menuSubject: menuSubject$ }) => {
   const [algorithms, setAlgorithm] = React.useState<Array<IList>>(
     getAlgorithms()
   );
@@ -73,6 +77,7 @@ const ActionHeader: React.FC<IProps> = ({ onHandleClick }) => {
   }, [algorithms]);
 
   const handleAlgorithmSelection = (index: number): void => {
+    menuSubject$.next("menu clicked");
     const updatedAlgo = algorithms.map((x: IList, i: number) => {
       index === i ? (x.active = true) : (x.active = false);
       return x;
@@ -84,7 +89,7 @@ const ActionHeader: React.FC<IProps> = ({ onHandleClick }) => {
     <HeaderNav>
       <h2>Rakesh</h2>
       <Actions>
-        <Dropdown>
+        <Dropdown menuSubject$={menuSubject$}>
           <Dropdown.Button menuLabel="visualize">
             {activeAlgorithm ? activeAlgorithm.label : "Select an Algorithms"}
           </Dropdown.Button>

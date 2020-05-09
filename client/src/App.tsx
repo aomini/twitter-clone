@@ -11,7 +11,7 @@ function App() {
       <ThemeContextProvider>
         <>
           <GlobalStyles/>          
-          <Grid />
+          <Grid/>
         </>
       </ThemeContextProvider>
     </div>
