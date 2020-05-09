@@ -42,15 +42,21 @@ const DropdownItemDiv = styled.div<any>`
 `;
 
 export interface NamedChildrenSlots{
+    
+    /** Functional component which accepts props of {@link IDropdownItem} */
     Item: React.FC<IDropdownItem>,
 }
 
 export interface IDropdownItem{
     onHandleMouseDown ?: (index: number) => void
+
+    /** Index of the list */
     index: number;
 }
 
 export interface IProps{
+
+    /** Title of the label */
     menuLabel: string
 }
 
@@ -66,7 +72,7 @@ const DropdownItem: React.FC<IDropdownItem> = ({children, index, onHandleMouseDo
     if (!children) {
         throw new Error("Children is mandatory");
     }
-    if(onHandleMouseDown && index){
+    if(onHandleMouseDown && typeof index !== "undefined"){
       return <DropdownItemDiv onMouseDown={():void => onHandleMouseDown(index)}>{children}</DropdownItemDiv>;  
     }
     return <DropdownItemDiv>{children}</DropdownItemDiv>;
@@ -75,3 +81,5 @@ const DropdownItem: React.FC<IDropdownItem> = ({children, index, onHandleMouseDo
 DropdownMenu.Item = DropdownItem;
 
 export default DropdownMenu;
+
+

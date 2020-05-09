@@ -14,7 +14,6 @@ const HeaderNav = styled.nav`
   background: ${(props): string => props.theme.section};
   transition: background 500ms ease;
   padding: 8px;
-
   > h2 {
     margin: 0;
   }
@@ -39,19 +38,14 @@ interface IList {
   algorithm: (nodes: ICell[]) => ICell[] | void;
 }
 
-// interface IAlgorithmContext {
-//   setAlgorithm?: () => void;
-//   algorithmIndex: number;
-// }
-
-// const IActionHeaderContext = React.createContext<IAlgorithmContext>({
-//   algorithmIndex: 0,
-// });
-
+/**
+ * Get the algorithm lists
+ * @returns Ilist[]
+ */
 const getAlgorithms = (): IList[] => {
   const lists: IList[] = [
-    { label: "Dijkistra", algorithm: dikjistra, active: false },
-    { label: "A* Algorithm", algorithm: aStar, active: true},
+    { label: "A* Algorithm", algorithm: aStar},    
+    { label: "Dijkistra", algorithm: dikjistra},
     { label: "Breadth First Algorithm", algorithm: BFS },
     { label: "Depth First Algorithm", algorithm: DFS },
   ];
@@ -92,7 +86,7 @@ const ActionHeader: React.FC<IProps> = ({ onHandleClick }) => {
       <Actions>
         <Dropdown>
           <Dropdown.Button menuLabel="visualize">
-            {activeAlgorithm ? activeAlgorithm.label : "Algorithms"}
+            {activeAlgorithm ? activeAlgorithm.label : "Select an Algorithms"}
           </Dropdown.Button>
           <Dropdown.Menu menuLabel="visualize">
             {algorithms.map((x: IList, index: number) => (

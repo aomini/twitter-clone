@@ -87,9 +87,15 @@ export const getDiagonalNeighbours = <T extends ICell>(
 
 /**
  * Algorithm:
- * 1. Loop unless something is unvisitedNodes are none i.e all the nodes are visited & not opened.
- * 2. Sort by distance. initial distance of starting point is 0 so it comes at top on first.
- * 3.
+ * 1. Set all of the hcost to infinity except the starting one
+ * 2. Set current node to starting node
+ * 3. while there are unvisited nodes loop
+ * 4. Get diagonal neighbours and update their hcost 
+ * 5. if current node is end node stop the algorithm and return the visited nodes
+ * 6. sort the updated neightbours nodes by their fcost (hcost + gcost) where gcost is distance from starting node
+ * 7. set the top of the sorted node to visited 
+ * 8. Make the top node current and push it to visited array
+ * 8. Filter the unvisited nodes array by isVisited false
  * @param nodes
  *
  *
@@ -118,14 +124,12 @@ export const aStar = (nodes: ICell[]): ICell[] | void => {
       visitedNodes.push(current);
       return visitedNodes;
     }
-    // nodesWithUpdatedNeighbours[0].isVisited = true;
-    // visitedNodes.push(nodesWithUpdatedNeighbours[0])
-    unvisitedNodes = nodesWithUpdatedNeighbours.sort((a, b) => a.hcost - b.hcost);
+    unvisitedNodes = nodesWithUpdatedNeighbours.sort((a, b) => {
+      return (a.hcost + a.distance) - (b.hcost + b.distance)
+    });
     unvisitedNodes[0].isVisited = true;
     current = unvisitedNodes[0];
     visitedNodes.push(current);    
-    unvisitedNodes = nodesWithUpdatedNeighbours.sort((a, b) => a.hcost - b.hcost).filter((x) => !x.isVisited)
+    unvisitedNodes = unvisitedNodes.filter((x) => !x.isVisited)
   }
-  // console.log(visitedNodes);
-  // return visitedNodes;
 };
