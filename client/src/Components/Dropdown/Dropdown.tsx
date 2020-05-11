@@ -42,7 +42,7 @@ const Dropdown: React.FC<IProps> & NamedChildrenSlots = ({children, menuSubject$
         }
     })
 
-    const blurEventEmmiter = () => {
+    const blurEventEmmiter = (): void => {
         menuSubject$.next("menu clicked")
     }    
 

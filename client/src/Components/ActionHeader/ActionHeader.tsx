@@ -91,7 +91,7 @@ const ActionHeader: React.FC<IProps> = ({ onHandleClick, menuSubject: menuSubjec
       <Actions>
         <Dropdown menuSubject$={menuSubject$}>
           <Dropdown.Button menuLabel="visualize">
-            {activeAlgorithm ? activeAlgorithm.label : "Select an Algorithms"}
+            {activeAlgorithm ? activeAlgorithm.label : "Select an Algorithm"}
           </Dropdown.Button>
           <Dropdown.Menu menuLabel="visualize">
             {algorithms.map((x: IList, index: number) => (

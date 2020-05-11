@@ -14,7 +14,7 @@ const ButtonLink = styled.button<any>`
   ${(props): string =>
     props.dropdown
       ? `
-    width: 150px;
+    // width: 150px;
     text-align: center;
     background: transparent;
   `

@@ -97,8 +97,6 @@ export const getDiagonalNeighbours = <T extends ICell>(
  * 8. Make the top node current and push it to visited array
  * 8. Filter the unvisited nodes array by isVisited false
  * @param nodes
- *
- *
  */
 export const aStar = (nodes: ICell[]): ICell[] | void => {
   const goalNode  = endNode(nodes) as ICell;
