@@ -3,6 +3,12 @@ import { ICell } from "./../Interfaces/Cell.interface";
 import { Queue } from "../DataStructure/Queue";
 import { startNode, endNode } from "./helpers";
 
+/**
+ * Get diagonal neighbours 
+ * Since it's a non weighted no need to updated the distances 
+ * @param currentNode 
+ * @param nodes 
+ */
 export const getNonWeightedDiagonalNeighbours = <T extends ICell>(
   currentNode: T,
   nodes: T[]
@@ -68,7 +74,7 @@ export const BFS = (nodes: ICell[]) : ICell[] | void => {
     const initialNode  = startNode(nodes) as ICell;
     const goalNode = endNode(nodes)
     if(typeof goalNode === "undefined") return [];
-    
+
     initialNode.isVisited = true;
     queue.enqueue(initialNode)
     while(!queue.isEmpty()){
