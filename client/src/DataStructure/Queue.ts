@@ -1,25 +1,25 @@
-export class Queue<T>{
-    public items: Array<T>;
+export class Queue<T> {
+  public items: Array<T>;
 
-    constructor(){
-        this.items = []
+  constructor() {
+    this.items = [];
+  }
+
+  public enqueue(element: T): void {
+    this.items.push(element);
+  }
+
+  public dequeue(): T | undefined {
+    if (!this.isEmpty()) {
+      return this.items.shift();
     }
+  }
 
-    public enqueue(element: T): void{
-        this.items.push(element)
-    }
+  public front(): T {
+    return this.items[0];
+  }
 
-    public dequeue(): T | undefined{
-        if(!this.isEmpty()){
-            return this.items.shift();
-        }
-    }
-
-    public front(): T{         
-        return this.items[0]; 
-    } 
-
-    public isEmpty(): boolean{ 
-        return this.items.length === 0;
-    } 
+  public isEmpty(): boolean {
+    return this.items.length === 0;
+  }
 }

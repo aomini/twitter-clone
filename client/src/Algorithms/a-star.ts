@@ -24,7 +24,7 @@ function hcost(node: ICell, endNode: ICell): number {
  * First updates the four direction nodes (top, bottom, left & right)
  * Secondly checks and updates the diagonal nodes (left-top , left-bottom, right-top & right-bottom)
  * @todo refactor manhattan distance is same as dikjistra logic
- * @param {T} currentNode 
+ * @param {T} currentNode
  * @param {T} nodes
  * @returns {T[]}
  */
@@ -50,7 +50,7 @@ export const getDiagonalNeighbours = <T extends ICell>(
       (x.row === currentNode.row &&
         x.column === currentNode.column + 1 &&
         x.wall !== true &&
-        !x.isVisited)      
+        !x.isVisited)
     ) {
       /** Asuming the distance between the nodes are 10 */
       x.distance = currentNode.distance + 10;
@@ -58,7 +58,8 @@ export const getDiagonalNeighbours = <T extends ICell>(
       x.previousNode = currentNode;
     }
     /** Following conditions are for diagonal neighbours */
-    if((x.row === currentNode.row - 1 &&
+    if (
+      (x.row === currentNode.row - 1 &&
         x.column === currentNode.column - 1 &&
         x.wall !== true &&
         !x.isVisited) ||
@@ -74,11 +75,11 @@ export const getDiagonalNeighbours = <T extends ICell>(
         x.column === currentNode.column + 1 &&
         x.wall !== true &&
         !x.isVisited)
-    ){
-     /** Assuming the distance between the nodes are 10. we used pythagorus theorem to get 14 on diagonal distance*/
+    ) {
+      /** Assuming the distance between the nodes are 10. we used pythagorus theorem to get 14 on diagonal distance*/
       x.distance = currentNode.distance + 14;
       x.hcost = hcost(x, goalNode);
-      x.previousNode = currentNode; 
+      x.previousNode = currentNode;
     }
     return x;
   });
@@ -90,17 +91,17 @@ export const getDiagonalNeighbours = <T extends ICell>(
  * 1. Set all of the hcost to infinity except the starting one
  * 2. Set current node to starting node
  * 3. while there are unvisited nodes loop
- * 4. Get diagonal neighbours and update their hcost 
+ * 4. Get diagonal neighbours and update their hcost
  * 5. if current node is end node stop the algorithm and return the visited nodes
  * 6. sort the updated neightbours nodes by their fcost (hcost + gcost) where gcost is distance from starting node
- * 7. set the top of the sorted node to visited 
+ * 7. set the top of the sorted node to visited
  * 8. Make the top node current and push it to visited array
  * 8. Filter the unvisited nodes array by isVisited false
  * @param nodes
  */
 export const aStar = (nodes: ICell[]): ICell[] | void => {
-  const goalNode  = endNode(nodes) as ICell;
-  if(!Object.keys(goalNode).length){
+  const goalNode = endNode(nodes) as ICell;
+  if (!Object.keys(goalNode).length) {
     return [] as ICell[];
   }
   const startingNode = startNode(nodes) as ICell;
@@ -108,26 +109,26 @@ export const aStar = (nodes: ICell[]): ICell[] | void => {
 
   let unvisitedNodes = _deepClone(nodes);
   const visitedNodes = [];
-  
+
   let current = startingNode;
 
-  while (unvisitedNodes.length) {    
+  while (unvisitedNodes.length) {
     const nodesWithUpdatedNeighbours = getDiagonalNeighbours(
       current,
       goalNode,
       unvisitedNodes
     );
-    
+
     if (current.endNode) {
       visitedNodes.push(current);
       return visitedNodes;
     }
     unvisitedNodes = nodesWithUpdatedNeighbours.sort((a, b) => {
-      return (a.hcost + a.distance) - (b.hcost + b.distance)
+      return a.hcost + a.distance - (b.hcost + b.distance);
     });
     unvisitedNodes[0].isVisited = true;
     current = unvisitedNodes[0];
-    visitedNodes.push(current);    
-    unvisitedNodes = unvisitedNodes.filter((x) => !x.isVisited)
+    visitedNodes.push(current);
+    unvisitedNodes = unvisitedNodes.filter((x) => !x.isVisited);
   }
 };

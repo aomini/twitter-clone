@@ -4,22 +4,27 @@ import { theme } from "./theme";
 
 interface IthemeContext {
   dark: boolean;
-  toggle?: () => void
+  toggle?: () => void;
 }
 
 const defaultContext: IthemeContext = {
-  dark: false
-}
+  dark: false,
+};
 
 const ThemeContext = React.createContext(defaultContext);
 
 const useTheme = (): IthemeContext => React.useContext(ThemeContext);
 
-const useDarkMode = () : [IthemeContext, React.Dispatch<React.SetStateAction<IthemeContext>>] => {
-  const [contextTheme, setContextTheme] = React.useState<IthemeContext>({ dark: false });  
- 
+const useDarkMode = (): [
+  IthemeContext,
+  React.Dispatch<React.SetStateAction<IthemeContext>>
+] => {
+  const [contextTheme, setContextTheme] = React.useState<IthemeContext>({
+    dark: false,
+  });
+
   return [contextTheme, setContextTheme];
-}
+};
 
 const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -30,16 +35,16 @@ const ThemeContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const toggle = (): void => {
     setContextTheme({
-      dark : !contextTheme.dark
-    })
-  }
+      dark: !contextTheme.dark,
+    });
+  };
 
   return (
     <ThemeProvider theme={activeTheme}>
       <ThemeContext.Provider
         value={{
           dark: contextTheme.dark,
-          toggle
+          toggle,
         }}
       >
         {children}

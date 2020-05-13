@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Subject} from 'rxjs'
+import { Subject } from "rxjs";
 import { range as _range, flatten as _flatten } from "lodash";
 import * as gridDocument from "./../../utils/document.utils";
 import { ICellCoordinate, ICell } from "./../../Interfaces/Cell.interface";
@@ -102,8 +102,7 @@ const Grid: React.FC = () => {
             new Promise((resolve) => {
               setTimeout(() => {
                 // !node.startNode &&
-                  !node.endNode &&
-                  el.classList.add("node-visited");
+                !node.endNode && el.classList.add("node-visited");
                 resolve("resolved");
               }, 10 * index);
             })
@@ -164,16 +163,19 @@ const Grid: React.FC = () => {
 
   const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>): void => {
     menuSubject$.subscribe((response) => {
-      if(response === "make_walls"){
+      if (response === "make_walls") {
         setDraw(false);
-        console.log("stop drawing")
+        console.log("stop drawing");
       }
-    })    
+    });
   };
 
   return (
     <>
-      <ActionHeader onHandleClick={handleVisualize} menuSubject={menuSubject$}/>
+      <ActionHeader
+        onHandleClick={handleVisualize}
+        menuSubject={menuSubject$}
+      />
       <div id="layoutGrid">
         {/* <div style={{display : 'flex'}}>
         <button onClick={handleVisualize} className="gradient-btn">

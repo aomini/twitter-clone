@@ -22,9 +22,9 @@ const DropdownButton: React.FC<IProps> = ({ children, menuLabel }) => {
     <Button onHandleClick={handleClick} dropdown={true}>
       {children}
       &nbsp;
-      {(menuLabel === active && <FontAwesomeIcon icon="caret-up" size="lg"/>) || (
-        <FontAwesomeIcon icon="caret-down" size="lg"/>
-      )}
+      {(menuLabel === active && (
+        <FontAwesomeIcon icon="caret-up" size="lg" />
+      )) || <FontAwesomeIcon icon="caret-down" size="lg" />}
     </Button>
   );
 };

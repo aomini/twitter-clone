@@ -1,5 +1,5 @@
 import React from "react";
-import {Subject} from "rxjs";
+import { Subject } from "rxjs";
 import styled from "styled-components";
 import Dropdown from "./../Dropdown/Dropdown";
 import DropdownMenu from "../Dropdown/DropdownMenu";
@@ -33,7 +33,7 @@ interface IProps {
   ) => Promise<void>;
 
   /** Subject for menu events */
-  menuSubject : Subject<string>
+  menuSubject: Subject<string>;
 }
 
 interface IList {
@@ -48,8 +48,8 @@ interface IList {
  */
 const getAlgorithms = (): IList[] => {
   const lists: IList[] = [
-    { label: "A* Algorithm", algorithm: aStar},    
-    { label: "Dijkistra", algorithm: dikjistra},
+    { label: "A* Algorithm", algorithm: aStar },
+    { label: "Dijkistra", algorithm: dikjistra },
     { label: "Breadth First Algorithm", algorithm: BFS },
     { label: "Depth First Algorithm", algorithm: DFS },
   ];
@@ -66,7 +66,10 @@ const getActiveAlgorithm = <T extends IList>(lists: T[]): T | null => {
   return activeList ? activeList[0] : null;
 };
 
-const ActionHeader: React.FC<IProps> = ({ onHandleClick, menuSubject: menuSubject$ }) => {
+const ActionHeader: React.FC<IProps> = ({
+  onHandleClick,
+  menuSubject: menuSubject$,
+}) => {
   const [algorithms, setAlgorithm] = React.useState<Array<IList>>(
     getAlgorithms()
   );

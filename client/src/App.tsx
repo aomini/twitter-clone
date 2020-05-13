@@ -1,8 +1,8 @@
 import React from "react";
-import styled from 'styled-components'
+import styled from "styled-components";
 import "./App.css";
 import { ThemeContextProvider } from "./Components/ThemeContextProvider/ThemeContextProvider";
-import {GlobalStyles} from "./global.styled"
+import { GlobalStyles } from "./global.styled";
 import Grid from "./Components/Grid/Grid";
 
 function App() {
@@ -10,8 +10,8 @@ function App() {
     <div className="App">
       <ThemeContextProvider>
         <>
-          <GlobalStyles/>          
-          <Grid/>
+          <GlobalStyles />
+          <Grid />
         </>
       </ThemeContextProvider>
     </div>

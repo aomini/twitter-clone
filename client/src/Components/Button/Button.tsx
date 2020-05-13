@@ -45,9 +45,7 @@ const DefaultButtonLink = styled(ButtonLink)`
 `;
 
 interface IButtonProps {
-  onHandleClick?: (
-    e: React.MouseEvent<HTMLElement>
-  ) => void | Promise<void>;
+  onHandleClick?: (e: React.MouseEvent<HTMLElement>) => void | Promise<void>;
   dropdown?: boolean;
   primary?: boolean;
 }

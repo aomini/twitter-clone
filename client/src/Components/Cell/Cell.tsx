@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ICell} from "./../../Interfaces/Cell.interface";
+import { ICell } from "./../../Interfaces/Cell.interface";
 
 import StartIcon from "../Icons/StartIcon";
 import EndIcon from "../Icons/TargetIcon";
@@ -8,13 +8,19 @@ import "./cell.styles.scss";
 
 type MouseEvent = React.MouseEvent<HTMLDivElement>;
 
-export interface ICellWithEvents{
-  onHandleMouseDown : (e : MouseEvent) => void;
-  onHandleMouseEnter : (e : MouseEvent) => void;
-  onHandleMouseUp : (e : MouseEvent) => void;
+export interface ICellWithEvents {
+  onHandleMouseDown: (e: MouseEvent) => void;
+  onHandleMouseEnter: (e: MouseEvent) => void;
+  onHandleMouseUp: (e: MouseEvent) => void;
 }
 
-const Cell: React.FC<ICell & ICellWithEvents> = ({row, column, startNode = false, endNode = false, ...events}) => {
+const Cell: React.FC<ICell & ICellWithEvents> = ({
+  row,
+  column,
+  startNode = false,
+  endNode = false,
+  ...events
+}) => {
   return (
     <>
       <div
@@ -25,8 +31,8 @@ const Cell: React.FC<ICell & ICellWithEvents> = ({row, column, startNode = false
         onMouseEnter={events.onHandleMouseEnter}
         onMouseUp={events.onHandleMouseUp}
       >
-        {startNode && <StartIcon/>}
-        {endNode && <EndIcon/>}
+        {startNode && <StartIcon />}
+        {endNode && <EndIcon />}
       </div>
     </>
   );

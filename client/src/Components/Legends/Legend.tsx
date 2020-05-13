@@ -1,9 +1,7 @@
-import React from "react"
+import React from "react";
 
 const Legend: React.FC = () => {
-    return (
-        <div></div>
-    )
-}
+  return <div></div>;
+};
 
 export default Legend;

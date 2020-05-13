@@ -1,5 +1,5 @@
 import { ICell } from "./../Interfaces/Cell.interface";
-import {cloneDeep as _deepClone} from 'lodash'
+import { cloneDeep as _deepClone } from "lodash";
 
 export const updateNeighbouringNodes = (nodes: ICell[]): [] | ICell[] => {
   const currentNode = nodes[0];
@@ -21,9 +21,9 @@ export const updateNeighbouringNodes = (nodes: ICell[]): [] | ICell[] => {
         x.column === currentNode.column + 1 &&
         x.wall !== true &&
         !x.isVisited)
-    ) {    
-        x.distance = currentNode.distance + 1;
-        x.previousNode = currentNode;
+    ) {
+      x.distance = currentNode.distance + 1;
+      x.previousNode = currentNode;
     }
     return x;
   });
@@ -37,15 +37,16 @@ export const dikjistra = (nodes: ICell[]): Array<ICell> | void => {
   const visitedNodes = [];
   while (unvisitedNodes.length) {
     unvisitedNodes = unvisitedNodes.sort((a, b) => a.distance - b.distance);
-    if(unvisitedNodes[0].distance === Infinity) return visitedNodes;
-    const nodesWithUpdatedDistance = updateNeighbouringNodes(unvisitedNodes); 
+    if (unvisitedNodes[0].distance === Infinity) return visitedNodes;
+    const nodesWithUpdatedDistance = updateNeighbouringNodes(unvisitedNodes);
     nodesWithUpdatedDistance[0].isVisited = true;
     visitedNodes.push(nodesWithUpdatedDistance[0]);
-    if(nodesWithUpdatedDistance[0].endNode){
+    if (nodesWithUpdatedDistance[0].endNode) {
       break;
     }
-    unvisitedNodes = nodesWithUpdatedDistance.filter((x: ICell) => !x.isVisited);
+    unvisitedNodes = nodesWithUpdatedDistance.filter(
+      (x: ICell) => !x.isVisited
+    );
   }
   return visitedNodes;
 };
-
